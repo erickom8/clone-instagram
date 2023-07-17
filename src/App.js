@@ -1,23 +1,36 @@
 import logo from './logo.svg';
 import './App.css';
+import {db} from './firebase.js';
+import {useEffect, useState} from 'react';
+
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+
+  useEffect(() => {
+  },[]);
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className='header'>
+
+        <div className='header_logo'>
+          <a href=''><img src ='https://logosmarcas.net/wp-content/uploads/2020/04/Instagram-Logo.png' /></a>
+        </div>
+
+
+        <div className="header_loginform">
+          <form>
+            <input type="text" placeholder='Login...'/>
+            <input type="password" placeholder='Senha...'/>
+            <input type="submit" name='acao' value ='Logar!'/>
+          </form>
+
+        </div>
+      </div>
     </div>
   );
 }
