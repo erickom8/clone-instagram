@@ -1,9 +1,14 @@
 import {useEffect, useState} from 'react';
-import {auth} from './firebase.js';
-
+import {auth, storage, db} from './firebase.js';
+import firebase from '/node_modules/firebase/package.json';
+import { serverTimestamp } from "firebase/firestore";
 
 function Header(props){
+    
 
+    const [progress, setProgress] = useState(0);
+
+    const [file, setFile] = useState(null);
 
     useEffect(() => {
         
@@ -68,6 +73,57 @@ function Header(props){
         modal.style.display = 'none';
     }
 
+    function abrirModalUpload (e){
+        e.preventDefault();
+
+        let modal = document.querySelector('.modalUpload');
+        modal.style.display = 'block';
+    }
+
+    function fecharModalUpload(){
+        
+
+        let modal = document.querySelector('.modalUpload');
+        modal.style.display = 'none';
+    }
+
+    function uploadPost (e){
+        e.preventDefault();
+        
+        let tituloPost = document.getElementById('titulo-upload').value;
+        let progressEl = document.getElementById('progress-upload').value;
+
+
+        const uploadTask = storage.ref(`images/${file.name}`).put(file);
+
+        uploadTask.on('state_changed',(snapshot)=>{
+            const progress = Math.round(snapshot.bytesTransferred/snapshot.totalBytes) * 100;
+            setProgress(progress);
+        },(error)=>{
+
+        },()=>{
+
+            storage.ref('images').child(file.name).getDownloadURL()
+            .then(function(url){
+                db.collection('posts').add({
+                    titulo: tituloPost,
+                    image: url,
+                    username: props.user,
+                    timestamp: serverTimestamp()
+                })
+
+                setProgress(0);
+                setFile(null);
+
+                alert('Upload concluído!');
+
+                document.getElementById('form-upload').reset();
+
+            })
+
+        })
+    }
+
     return(
         <div className='header'>
 
@@ -85,6 +141,24 @@ function Header(props){
                     </form>
                 </div>
             </div>
+
+            <div className='modalUpload'>
+                <div className='formUpload'>
+                    <div onClick={()=>fecharModalUpload()}className='close-modal-criar'>X</div>
+                    <h2>Fazer Upload</h2>
+                    <form id='form-upload'onSubmit={(e)=>uploadPost(e)}>
+                        <progress id='progress-upload'value={progress}></progress>
+                        <input id='titulo-upload' type='text' placeholder='Nome da sua foto...' />
+                        <input onChange={(e)=>setFile(e.target.files[0])} type='file' name='File' />
+                        
+                        <input type='submit' value='Publicar'/>
+
+                        
+                    </form>
+                </div>
+            </div>
+
+
             <div className='center'>
             <div className='header_logo'>
                 <a href=''><img src ='https://logosmarcas.net/wp-content/uploads/2020/04/Instagram-Logo.png' /></a>
@@ -94,7 +168,7 @@ function Header(props){
                 (props.user)?
                 <div className='header_logadoInfo'>
                     <span>Olá, <b>{props.user}</b></span>
-                    <a href='#'>Postar!</a>
+                    <a onClick={(e)=> abrirModalUpload(e)}href='#'>Postar!</a>
                     </div>
                 :
                 <div className="header_loginform">
