@@ -214,10 +214,15 @@ body{
     max-width: 700px;
     margin: 10px auto;
     padding-bottom: 40px;
+    border-radius: 20px;
 }
 
 .postSingle img{
     width:100%;
+    height: auto; 
+    border: 2px solid #383535; 
+    border-radius: 20px;
+    margin: 0 auto;
 }
 
 .postSingle p{
@@ -257,4 +262,12 @@ body{
 
 .coment-single p{
     font-size: 14px;
+}
+
+video {
+    width: 100%; 
+    height: auto; 
+    border: 2px solid #383535;
+    border-radius: 20px;
+    margin: 0 auto;
 }

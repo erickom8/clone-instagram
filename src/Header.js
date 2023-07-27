@@ -120,9 +120,10 @@ function Header(props){
                 db.collection('posts').add({
                     titulo: tituloPost,
                     image: url,
+                    video: url,
                     username: props.user,
                     timestamp: serverTimestamp()
-                })
+                }) 
 
                 setProgress(0);
                 setFile(null);
