@@ -53,7 +53,7 @@ function Header(props){
         auth.signInWithEmailAndPassword(email,senha)
         .then((auth)=>{
             props.setUser(auth.user.displayName);
-            // window.location.href = "/";
+            window.location.href = "/";
             alert('Logado com sucesso!');
         }).catch((error)=>{
             alert(error.message);
@@ -95,7 +95,7 @@ function Header(props){
         e.preventDefault();
         auth.signOut().then(function(val){
             props.setUser(null);
-            // window.location.href = "/";
+            window.location.href = "/";
         })
     }
 

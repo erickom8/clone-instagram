@@ -18,7 +18,9 @@ function App() {
 
 
     auth.onAuthStateChanged(function(val){
-      setUser(val.displayName);
+      if(val!=null){
+        setUser(val.displayName);
+      }
     })
 
 
@@ -49,7 +51,7 @@ function App() {
       {
         posts.map((val)=>{
           return (
-            
+
               <Post user={user} info={val.info} id={val.id} />
 
 

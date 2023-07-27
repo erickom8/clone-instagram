@@ -213,7 +213,7 @@ body{
     background-color: white;
     max-width: 700px;
     margin: 10px auto;
-
+    padding-bottom: 40px;
 }
 
 .postSingle img{
@@ -241,4 +241,20 @@ body{
     color: white;
     border: 0;
     padding: 8px 10px;
+}
+
+
+.coments {
+    margin-left: 20px;
+}
+
+
+.coments h2{
+    border-bottom: 1px solid rgb(105, 108, 109);
+    padding: 8px 0;
+    color:rgb(105, 108, 109);
+}
+
+.coment-single p{
+    font-size: 14px;
 }
