@@ -11,6 +11,9 @@ function Header(props){
     const [file, setFile] = useState(null);
 
     useEffect(() => {
+
+
+       
         
     },[]);
 
@@ -50,6 +53,7 @@ function Header(props){
         auth.signInWithEmailAndPassword(email,senha)
         .then((auth)=>{
             props.setUser(auth.user.displayName);
+            // window.location.href = "/";
             alert('Logado com sucesso!');
         }).catch((error)=>{
             alert(error.message);
@@ -87,6 +91,14 @@ function Header(props){
         modal.style.display = 'none';
     }
 
+    function deslogar(e){
+        e.preventDefault();
+        auth.signOut().then(function(val){
+            props.setUser(null);
+            // window.location.href = "/";
+        })
+    }
+
     function uploadPost (e){
         e.preventDefault();
         
@@ -118,7 +130,7 @@ function Header(props){
                 alert('Upload concluído!');
 
                 document.getElementById('form-upload').reset();
-
+                fecharModalUpload();
             })
 
         })
@@ -132,8 +144,8 @@ function Header(props){
                     <div onClick={()=>fecharModalCriarConta()}className='close-modal-criar'>X</div>
                     <h2>Criar Conta</h2>
                     <form onSubmit={(e)=>CriarConta(e)}>
-                        <input id='email-cadastro' type='text' placeholder='Seu e-mail...' />
                         <input id='username-cadastro' type='text' placeholder='Seu username...' />
+                        <input id='email-cadastro' type='text' placeholder='Seu e-mail...' />
                         <input id='senha-cadastro'type='password' placeholder='Sua senha...'/>
                         <input type='submit' value='Criar Conta!'/>
 
@@ -168,7 +180,8 @@ function Header(props){
                 (props.user)?
                 <div className='header_logadoInfo'>
                     <span>Olá, <b>{props.user}</b></span>
-                    <a onClick={(e)=> abrirModalUpload(e)}href='#'>Postar!</a>
+                    <a id='Postar-Conteudo'onClick={(e)=>abrirModalUpload(e)}href='#'>Postar!</a>
+                    <a id='Logout'onClick={(e)=>deslogar(e)}>Deslogar</a>
                     </div>
                 :
                 <div className="header_loginform">
