@@ -3,6 +3,8 @@ import {auth, storage, db} from './firebase.js';
 import firebase from '/node_modules/firebase/package.json';
 import { serverTimestamp } from "firebase/firestore";
 
+
+
 function Header(props){
     
 
@@ -82,6 +84,13 @@ function Header(props){
 
         let modal = document.querySelector('.modalUpload');
         modal.style.display = 'block';
+
+        let videos = document.querySelectorAll('video');
+        videos.forEach((video) => {
+            video.controls = null;
+            video.style.pointerEvents = 'none';
+
+        });
     }
 
     function fecharModalUpload(){
@@ -89,6 +98,13 @@ function Header(props){
 
         let modal = document.querySelector('.modalUpload');
         modal.style.display = 'none';
+
+        let videos = document.querySelectorAll('video');
+        videos.forEach((video) => {
+            video.controls = true;
+            video.style.pointerEvents = 'auto';
+
+        });
     }
 
     function deslogar(e){
@@ -107,7 +123,7 @@ function Header(props){
 
 
         const uploadTask = storage.ref(`images/${file.name}`).put(file);
-
+        
         uploadTask.on('state_changed',(snapshot)=>{
             const progress = Math.round(snapshot.bytesTransferred/snapshot.totalBytes) * 100;
             setProgress(progress);
@@ -117,14 +133,37 @@ function Header(props){
 
             storage.ref('images').child(file.name).getDownloadURL()
             .then(function(url){
+
+
+                const extensaoArquivo = url.substring(url.lastIndexOf('.') + 1).toLowerCase();
+
+                const partesUrl = extensaoArquivo.split('?');
+
+                const urlSemParametros = partesUrl[0];
+
+                
+                let url_imagem = null;
+                let url_video = null;
+
+                if (urlSemParametros === 'mp4') {
+                    url_video = url;
+                  } else {
+                    url_imagem = url;
+                  }
+                
+                  
+                  
                 db.collection('posts').add({
                     titulo: tituloPost,
-                    image: url,
-                    video: url,
+                    image: url_imagem,
+                    video: url_video,
                     username: props.user,
                     timestamp: serverTimestamp()
                 }) 
-
+                    
+                console.log(urlSemParametros);
+                console.log(url_video);
+                console.log(url_imagem);
                 setProgress(0);
                 setFile(null);
 

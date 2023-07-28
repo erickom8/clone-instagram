@@ -54,10 +54,6 @@ function App() {
 
               <Post user={user} info={val.info} id={val.id} />
 
-
-
-
-
           )
         })
       }
